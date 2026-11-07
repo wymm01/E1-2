@@ -125,6 +125,24 @@ def add_quiz(quizzes):
     print(f"현재 퀴즈는 모두 {len(quizzes)}개예요.")
 
 
+def show_quiz_list(quizzes):
+    if len(quizzes) == 0:
+        print("등록된 퀴즈가 없어요.")
+        return
+
+    print()
+    print("=" * 30)
+    print(f"   퀴즈 목록 (총 {len(quizzes)}개)")
+    print("=" * 30)
+
+    for i in range(len(quizzes)):
+        quiz = quizzes[i]
+        print(f"\n{i + 1}. {quiz.question}")
+        for j in range(len(quiz.choices)):
+            print(f"   {j + 1}) {quiz.choices[j]}")
+        print(f"   정답: {quiz.answer}번")
+
+
 def show_menu():
     print()
     print("=" * 30)
@@ -151,7 +169,7 @@ def main():
             elif number == 2:
                 add_quiz(quizzes)
             elif number == 3:
-                print("퀴즈 목록 기능은 아직 준비 중이에요.")
+                show_quiz_list(quizzes)
             elif number == 4:
                 print("점수 확인 기능은 아직 준비 중이에요.")
             elif number == 5:
