@@ -45,6 +45,58 @@ def create_default_quizzes():
     return quizzes
 
 
+def read_number(prompt, min_value, max_value):
+    while True:
+        text = input(prompt).strip()
+
+        if text == "":
+            print("아무것도 입력하지 않았어요. 숫자를 입력해 주세요.")
+            continue
+
+        try:
+            number = int(text)
+        except ValueError:
+            print("숫자만 입력할 수 있어요.")
+            continue
+
+        if number < min_value or number > max_value:
+            print(f"{min_value}~{max_value} 사이의 숫자만 입력할 수 있어요.")
+            continue
+
+        return number
+
+
+def play_quiz(quizzes):
+    if len(quizzes) == 0:
+        print("등록된 퀴즈가 없어요. 먼저 퀴즈를 추가해 주세요.")
+        return None
+
+    total = len(quizzes)
+    score = 0
+    print(f"\n퀴즈를 시작합니다! 총 {total}문제예요.")
+
+    for i in range(total):
+        quiz = quizzes[i]
+        print(f"\n[{i + 1}/{total}]")
+        quiz.show()
+
+        max_choice = len(quiz.choices)
+        user_answer = read_number(f"정답 번호를 입력하세요 (1~{max_choice}): ", 1, max_choice)
+
+        if quiz.is_correct(user_answer):
+            print("정답이에요!")
+            score += 1
+        else:
+            right_text = quiz.choices[quiz.answer - 1]
+            print(f"틀렸어요. 정답은 {quiz.answer}번 '{right_text}' 이에요.")
+
+    print()
+    print("=" * 30)
+    print(f"결과: {total}문제 중 {score}문제를 맞혔어요!")
+    print("=" * 30)
+    return score
+
+
 def show_menu():
     print()
     print("=" * 30)
@@ -59,38 +111,26 @@ def show_menu():
 
 
 def main():
-    while True:
-        show_menu()
+    quizzes = create_default_quizzes()
 
-        try:
-            choice = input("번호를 선택하세요: ").strip()
-        except (KeyboardInterrupt, EOFError):
-            print("\n프로그램을 안전하게 종료합니다. 안녕히 가세요!")
-            break
+    try:
+        while True:
+            show_menu()
+            number = read_number("번호를 선택하세요: ", 1, 5)
 
-        if choice == "":
-            print("아무것도 입력하지 않았어요. 1~5 사이의 번호를 입력해 주세요.")
-            continue
-
-        try:
-            number = int(choice)
-        except ValueError:
-            print("숫자만 입력할 수 있어요. 1~5 사이의 번호를 입력해 주세요.")
-            continue
-
-        if number == 1:
-            print("퀴즈 풀기 기능은 아직 준비 중이에요.")
-        elif number == 2:
-            print("퀴즈 추가 기능은 아직 준비 중이에요.")
-        elif number == 3:
-            print("퀴즈 목록 기능은 아직 준비 중이에요.")
-        elif number == 4:
-            print("점수 확인 기능은 아직 준비 중이에요.")
-        elif number == 5:
-            print("게임을 종료합니다. 안녕히 가세요!")
-            break
-        else:
-            print("1~5 사이의 번호만 선택할 수 있어요.")
+            if number == 1:
+                play_quiz(quizzes)
+            elif number == 2:
+                print("퀴즈 추가 기능은 아직 준비 중이에요.")
+            elif number == 3:
+                print("퀴즈 목록 기능은 아직 준비 중이에요.")
+            elif number == 4:
+                print("점수 확인 기능은 아직 준비 중이에요.")
+            elif number == 5:
+                print("게임을 종료합니다. 안녕히 가세요!")
+                break
+    except (KeyboardInterrupt, EOFError):
+        print("\n프로그램을 안전하게 종료합니다. 안녕히 가세요!")
 
 
 if __name__ == "__main__":
