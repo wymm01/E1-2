@@ -66,6 +66,17 @@ def read_number(prompt, min_value, max_value):
         return number
 
 
+def read_text(prompt):
+    while True:
+        text = input(prompt).strip()
+
+        if text == "":
+            print("아무것도 입력하지 않았어요. 내용을 입력해 주세요.")
+            continue
+
+        return text
+
+
 def play_quiz(quizzes):
     if len(quizzes) == 0:
         print("등록된 퀴즈가 없어요. 먼저 퀴즈를 추가해 주세요.")
@@ -97,6 +108,23 @@ def play_quiz(quizzes):
     return score
 
 
+def add_quiz(quizzes):
+    print("\n새 퀴즈를 추가합니다.")
+    question = read_text("문제를 입력하세요: ")
+
+    choices = []
+    for i in range(4):
+        choice = read_text(f"선택지 {i + 1}번을 입력하세요: ")
+        choices.append(choice)
+
+    answer = read_number("정답 번호를 입력하세요 (1~4): ", 1, 4)
+
+    new_quiz = Quiz(question, choices, answer)
+    quizzes.append(new_quiz)
+    print("퀴즈가 추가되었어요!")
+    print(f"현재 퀴즈는 모두 {len(quizzes)}개예요.")
+
+
 def show_menu():
     print()
     print("=" * 30)
@@ -121,7 +149,7 @@ def main():
             if number == 1:
                 play_quiz(quizzes)
             elif number == 2:
-                print("퀴즈 추가 기능은 아직 준비 중이에요.")
+                add_quiz(quizzes)
             elif number == 3:
                 print("퀴즈 목록 기능은 아직 준비 중이에요.")
             elif number == 4:
